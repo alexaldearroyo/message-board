@@ -10,6 +10,9 @@ const router = require('./routes/index');
 app.set('view engine', 'ejs');
 app.set('views', __dirname + '/views');
 
+// Place this middleware before your routes
+app.use(express.urlencoded({ extended: true }));
+
 app.use('/', router);
 
 app.listen(port, () => {
@@ -20,18 +23,41 @@ app.listen(port, () => {
 
 // routes/index.js:
 
-// routes/index.js
-
-var express = require('express');
+var express = require("express");
 var router = express.Router();
 
 var messages = [
-  { author: 'Usuario 1', text: 'Este es el primer mensaje' },
-  { author: 'Usuario 2', text: 'Aquí va otro mensaje' },
+  {
+    text: "Hi there!",
+    user: "Amando",
+    added: new Date(),
+  },
+  {
+    text: "Hello World!",
+    user: "Charles",
+    added: new Date(),
+  },
 ];
 
-router.get('/', function(req, res, next) {
-  res.render('message', { title: 'Express', messages: messages });
+router.get("/", function (req, res, next) {
+  // Update the title to "Mini Messageboard"
+  res.render("message", { title: "Mini Messageboard", messages: messages });
+});
+
+// New route for the "/new" path
+router.get("/new", function (req, res, next) {
+    res.render("message", { title: "New Message", messages: messages });
+});
+
+router.post('/new', function(req, res, next) {
+    // Directly push new message object into messages array
+    messages.push({
+      text: req.body.text,
+      user: req.body.user,
+      added: new Date()
+    });
+
+    res.redirect('/');
 });
 
 module.exports = router;
@@ -42,26 +68,156 @@ module.exports = router;
 
 <!DOCTYPE html>
 <html>
-
 <head>
-    <title>Simple Message Bar</title>
+    <title><%= title %></title>
 </head>
-
 <body>
-    <!-- En tu archivo de vista EJS (message.ejs) -->
     <h1>Mensajes</h1>
+
+    <p><a href="/new">Submit a New Message</a></p>
+
     <ul>
         <% messages.forEach(function(message) { %>
-            <li><strong>
-                    <%= message.author %>:
-                </strong>
+            <li>
+                <strong><%= message.user %>:</strong>
                 <%= message.text %>
+                <br>
+                <small>Added on <%= message.added.toDateString() %></small>
             </li>
-            <% }); %>
+        <% }); %>
     </ul>
-
 </body>
-
 </html>
+
+----------------------------------------
+
+// views/form.ejs:
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title><%= title %></title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f4f4;
+            color: #333;
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            width: 80%;
+            margin: auto;
+            overflow: hidden;
+        }
+        header {
+            background: #50b3a2;
+            color: #fff;
+            padding-top: 30px;
+            min-height: 70px;
+            border-bottom: #e8491d 3px solid;
+        }
+        header a {
+            color: #fff;
+            text-decoration: none;
+            text-transform: uppercase;
+            font-size: 16px;
+        }
+        header ul {
+            padding: 0;
+            list-style: none;
+            text-align: center;
+        }
+        header li {
+            display: inline;
+            margin: 0 20px;
+        }
+        header #branding {
+            float: left;
+        }
+        header #branding h1 {
+            margin: 0;
+        }
+        header nav {
+            float: right;
+            margin-top: 10px;
+        }
+        header .highlight, header .current a {
+            color: #e8491d;
+            font-weight: bold;
+        }
+        header a:hover {
+            color: #ffffff;
+            font-weight: bold;
+        }
+        .button {
+            height: 38px;
+            background: #e8491d;
+            border: 0;
+            padding-left: 20px;
+            padding-right: 20px;
+            color: #ffffff;
+        }
+        .button:hover {
+            background: #333333;
+            cursor: pointer;
+        }
+        .messages {
+            margin-bottom: 20px;
+            padding: 20px;
+            background: #fff;
+        }
+        .message {
+            border-bottom: 1px solid #eaeaea;
+            padding-bottom: 10px;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div id="branding">
+                <h1><span class="highlight">Mini</span> Messageboard</h1>
+            </div>
+            <nav>
+                <ul>
+                    <li class="current"><a href="/">Home</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <div class="container">
+        <section class="messages">
+            <% messages.forEach(function(message) { %>
+                <div class="message">
+                    <strong><%= message.user %>:</strong>
+                    <%= message.text %>
+                    <br>
+                    <small>Added on <%= message.added.toDateString() %></small>
+                </div>
+            <% }); %>
+        </section>
+
+        <section>
+            <h1>New Message</h1>
+            <form method="POST" action="/new">
+                <div>
+                    <label for="author">Author:</label>
+                    <input type="text" id="author" name="user" required>
+                </div>
+                <div>
+                    <label for="message">Message:</label>
+                    <textarea id="message" name="text" required></textarea>
+                </div>
+                <button class="button" type="submit">Submit</button>
+            </form>
+        </section>
+    </div>
+</body>
+</html>
+
 ----------------------------------------
 

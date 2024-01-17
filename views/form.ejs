@@ -1,10 +1,7 @@
 <!DOCTYPE html>
 <html>
-
 <head>
-    <title>
-        <%= title %>
-    </title>
+    <title><%= title %></title>
     <style>
         body {
             font-family: 'Arial', sans-serif;
@@ -14,13 +11,11 @@
             margin: 0;
             padding: 0;
         }
-
         .container {
             width: 80%;
             margin: auto;
             overflow: hidden;
         }
-
         header {
             background: #50b3a2;
             color: #fff;
@@ -28,49 +23,39 @@
             min-height: 70px;
             border-bottom: #e8491d 3px solid;
         }
-
         header a {
             color: #fff;
             text-decoration: none;
             text-transform: uppercase;
-            font-size: 14px;
+            font-size: 16px;
         }
-
         header ul {
             padding: 0;
             list-style: none;
             text-align: center;
         }
-
         header li {
             display: inline;
             margin: 0 20px;
         }
-
         header #branding {
             float: left;
         }
-
         header #branding h1 {
             margin: 0;
         }
-
         header nav {
             float: right;
             margin-top: 10px;
         }
-
-        header .highlight,
-        header .current a {
+        header .highlight, header .current a {
             color: #e8491d;
             font-weight: bold;
         }
-
         header a:hover {
             color: #ffffff;
             font-weight: bold;
         }
-
         .button {
             height: 38px;
             background: #e8491d;
@@ -79,76 +64,22 @@
             padding-right: 20px;
             color: #ffffff;
         }
-
         .button:hover {
             background: #333333;
             cursor: pointer;
         }
-
         .messages {
-            margin-top: 30px;
             margin-bottom: 20px;
             padding: 20px;
             background: #fff;
         }
-
         .message {
             border-bottom: 1px solid #eaeaea;
             padding-bottom: 10px;
             margin-bottom: 10px;
         }
-
-        .form-section {
-            background-color: #fff;
-            padding: 20px;
-            margin-top: 20px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            font-size: 14px;
-            margin-bottom: 20px;
-        }
-
-        .form-group {
-            margin-bottom: 15px;
-            display: flex;
-            align-items: center;
-        }
-
-        .form-group label {
-            flex: 0 0 100px;
-            margin-right: 10px;
-        }
-
-        .form-group input,
-        .form-group textarea {
-            flex: 1;
-            padding: 10px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-        }
-
-        .input-text {
-            width: 100%;
-            padding: 8px 10px;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            box-sizing: border-box;
-        }
-
-        .form-group textarea {
-            height: 40px;
-        }
-
-        .form-group textarea {
-            resize: vertical;
-            height: 40px;
-        }
-
-        .button-container {
-            text-align: center;
-        }
     </style>
 </head>
-
 <body>
     <header>
         <div class="container">
@@ -167,35 +98,28 @@
         <section class="messages">
             <% messages.forEach(function(message) { %>
                 <div class="message">
-                    <strong>
-                        <%= message.user %>:
-                    </strong>
+                    <strong><%= message.user %>:</strong>
                     <%= message.text %>
-                        <br>
-                        <small>Added on <%= message.added.toDateString() %></small>
+                    <br>
+                    <small>Added on <%= message.added.toDateString() %></small>
                 </div>
-                <% }); %>
+            <% }); %>
         </section>
 
-        <section class="form-section">
+        <section>
             <h1>New Message</h1>
             <form method="POST" action="/new">
-                <div class="form-group">
+                <div>
                     <label for="author">Author:</label>
-                    <input type="text" id="author" name="user" class="input-text" required>
+                    <input type="text" id="author" name="user" required>
                 </div>
-                <div class="form-group">
+                <div>
                     <label for="message">Message:</label>
-                    <textarea id="message" name="text" class="input-text" required></textarea>
+                    <textarea id="message" name="text" required></textarea>
                 </div>
-                <div class="button-container">
-                    <button class="button" type="submit">Submit</button>
-                </div>
+                <button class="button" type="submit">Submit</button>
             </form>
         </section>
-
-
     </div>
 </body>
-
 </html>

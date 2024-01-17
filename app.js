@@ -8,6 +8,9 @@ const router = require('./routes/index');
 app.set('view engine', 'ejs');
 app.set('views', __dirname + '/views');
 
+// Place this middleware before your routes
+app.use(express.urlencoded({ extended: true }));
+
 app.use('/', router);
 
 app.listen(port, () => {

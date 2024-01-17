@@ -1,0 +1,67 @@
+// app.js:
+
+// app.js
+
+const express = require('express');
+const app = express();
+const port = 3000;
+const router = require('./routes/index');
+
+app.set('view engine', 'ejs');
+app.set('views', __dirname + '/views');
+
+app.use('/', router);
+
+app.listen(port, () => {
+    console.log(`The application is running at http://localhost:${port}`);
+});
+
+----------------------------------------
+
+// routes/index.js:
+
+// routes/index.js
+
+var express = require('express');
+var router = express.Router();
+
+var messages = [
+  { author: 'Usuario 1', text: 'Este es el primer mensaje' },
+  { author: 'Usuario 2', text: 'Aquí va otro mensaje' },
+];
+
+router.get('/', function(req, res, next) {
+  res.render('message', { title: 'Express', messages: messages });
+});
+
+module.exports = router;
+
+----------------------------------------
+
+// views/message.ejs:
+
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Simple Message Bar</title>
+</head>
+
+<body>
+    <!-- En tu archivo de vista EJS (message.ejs) -->
+    <h1>Mensajes</h1>
+    <ul>
+        <% messages.forEach(function(message) { %>
+            <li><strong>
+                    <%= message.author %>:
+                </strong>
+                <%= message.text %>
+            </li>
+            <% }); %>
+    </ul>
+
+</body>
+
+</html>
+----------------------------------------
+

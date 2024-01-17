@@ -1,10 +1,23 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <title>Simple Message Bar</title>
 </head>
+
 <body>
-    <h1>Message Bar</h1>
-    <p><%= message %></p>
+    <!-- En tu archivo de vista EJS (message.ejs) -->
+    <h1>Mensajes</h1>
+    <ul>
+        <% messages.forEach(function(message) { %>
+            <li><strong>
+                    <%= message.author %>:
+                </strong>
+                <%= message.text %>
+            </li>
+            <% }); %>
+    </ul>
+
 </body>
+
 </html>
